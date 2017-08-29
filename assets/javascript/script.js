@@ -14,8 +14,8 @@
   let tableHeading
   let searchTerm
   let homeButton = $("#home")
-  let searchURL = "http://gateway.marvel.com/v1/public/characters?limit=100&ts=1&apikey=45ffc7a588682b67fca8b6fd6a866bcb&hash=1b9b9c66cd69a13c4a32ee739962a948"
-
+  let orginalURL = "http://gateway.marvel.com/v1/public/characters?limit=100&ts=1&apikey=45ffc7a588682b67fca8b6fd6a866bcb&hash=1b9b9c66cd69a13c4a32ee739962a948"
+  let searchURL = orginalURL
 //function to hit the API and grab hero names and pictures then populate thos in a table
 function getHeros() {
     $.get(searchURL, function (data){
@@ -40,11 +40,20 @@ getHeros()
 searchButton.click(function(){
   $("#heroTable").html("")
   searchTerm = $("#search").val()
-  searchURL = ("http://gateway.marvel.com/v1/public/characters?nameStartsWith=" + searchTerm + "&limit=100&ts=1&apikey=45ffc7a588682b67fca8b6fd6a866bcb&hash=1b9b9c66cd69a13c4a32ee739962a948")
-  $("#search").val("")
-  getHeros()
+
+//if search field is blank return orginal get
+  if (searchTerm == "") {
+    searchURL = orginalURL
+    getHeros();
+  }
+  else {
+    searchURL = ("http://gateway.marvel.com/v1/public/characters?limit=100&ts=1&apikey=45ffc7a588682b67fca8b6fd6a866bcb&hash=1b9b9c66cd69a13c4a32ee739962a948&nameStartsWith=" + searchTerm)
+    $("#search").val("")
+    getHeros()
+  }
   })
 
+//when page header is clicked reload page
 homeButton.click(function(){
   $("#heroTable").html("")
   searchURL = "http://gateway.marvel.com/v1/public/characters?limit=100&ts=1&apikey=45ffc7a588682b67fca8b6fd6a866bcb&hash=1b9b9c66cd69a13c4a32ee739962a948"
